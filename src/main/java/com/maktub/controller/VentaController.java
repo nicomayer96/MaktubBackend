@@ -37,7 +37,7 @@ public class VentaController {
     public ResponseEntity <List<Venta>> readAll(@RequestParam(value="mes") int mes) throws Exception{
         try{    
             List<Venta> ventas = new ArrayList();
-            ventas = Venta.verVentas(mes);
+            ventas = VentaDao.verVentas(mes);
             return new ResponseEntity(ventas , HttpStatus.OK);
         }catch(Exception e){
             return new ResponseEntity(e , HttpStatus.INTERNAL_SERVER_ERROR);
