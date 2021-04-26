@@ -33,7 +33,7 @@ public class VentaController {
     
     
     
-    @GetMapping("/ventas")
+    @GetMapping("/venta")
     public ResponseEntity <List<Venta>> readAll(@RequestParam(value="mes") int mes) throws Exception{
         try{    
             List<Venta> ventas = new ArrayList();
