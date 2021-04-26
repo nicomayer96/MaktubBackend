@@ -33,11 +33,11 @@ public class VentaController {
     
     
     
-    @GetMapping("/venta")
+    @GetMapping("/ventas")
     public ResponseEntity <List<Venta>> readAll(@RequestParam(value="mes") int mes) throws Exception{
         try{    
             List<Venta> ventas = new ArrayList();
-            ventas = VentaDao.verVentas(mes);
+            ventas = Venta.verVentas(mes);
             return new ResponseEntity(ventas , HttpStatus.OK);
         }catch(Exception e){
             return new ResponseEntity(e , HttpStatus.INTERNAL_SERVER_ERROR);
