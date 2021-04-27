@@ -40,7 +40,7 @@ public class PrendaDao {
             //Suma las cantidad en stock, en caso de que la prenda ya este cargada,
             //pero no borra el dato repetido
     String sqlSumaCantidades = "update stock set cantidad=(select sum(cantidad) "
-            + "from stock where idPrenda like (select idPrenda from prenda where "
+            + "where idPrenda like (select idPrenda from prenda where "
             + "tipo = '" + stock.getTipo()
             + "' and talle = '" + stock.getTalle()
             + "' and marca = '" + stock.getMarca()
