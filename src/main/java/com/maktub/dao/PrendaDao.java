@@ -19,7 +19,7 @@ import java.util.List;
  */
 public class PrendaDao {
     
-                //Agregar a la tabla prenda y si existe, al stock
+                //Agregar al stock al prenda
     
     public static void agregarPrenda(Stock stock) throws Exception{
     Connection cn = ConnectionManager.obtenerConexion();
@@ -36,9 +36,39 @@ public class PrendaDao {
             + "' and marca = '" + stock.getMarca()
             + "' and color = '" + stock.getColor() + "' limit 1), "
             + stock.getCantidad() + ")";
+    
+            //Suma las cantidad en stock, en caso de que la prenda ya este cargada,
+            //pero no borra el dato repetido
+    String sqlSumaCantidades = "update stock set cantidad=(select sum(cantidad) "
+            + "from stock where idPrenda like (select idPrenda from prenda where "
+            + "tipo = '" + stock.getTipo()
+            + "' and talle = '" + stock.getTalle()
+            + "' and marca = '" + stock.getMarca()
+            + "' and color = '" + stock.getColor() + "' limit 1)) "
+            + "where idPrenda like (select idPrenda from prenda where "
+            + "tipo = '" + stock.getTipo()
+            + "' and talle = '" + stock.getTalle()
+            + "' and marca = '" + stock.getMarca()
+            + "' and color = '" + stock.getColor() + "' limit 1)";
+    
+            //Eliminar stock repetido dejando el de mejor idStock
+    String sqlDeleteRepetido = "delete from stock where idPrenda like"
+            + " (select idPrenda from prenda where "
+            + "tipo = '" + stock.getTipo()
+            + "' and talle = '" + stock.getTalle()
+            + "' and marca = '" + stock.getMarca()
+            + "' and color = '" + stock.getColor() + "' limit 1) and "
+            + "idStock>(select min(idStock) from Stock where idPrenda like "
+            + "(select idPrenda from prenda where "
+            + "tipo = '" + stock.getTipo()
+            + "' and talle = '" + stock.getTalle()
+            + "' and marca = '" + stock.getMarca()
+            + "' and color = '" + stock.getColor() + "' limit 1))";
     Statement st = cn.createStatement();
     st.execute(sqlAgregarPrenda);
     st.execute(sqlAgregarStock);
+    st.execute(sqlSumaCantidades);
+    st.execute(sqlDeleteRepetido);
     st.close();
     cn.close();
     }
