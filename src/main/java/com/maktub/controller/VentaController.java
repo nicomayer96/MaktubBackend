@@ -46,7 +46,7 @@ public class VentaController {
    
     
     
-    @PostMapping("/cargarVenta")
+    @PostMapping("/cargarVentas")
     public ResponseEntity create(@RequestBody VentaView ventaView) throws Exception{
         try{            
             Venta v = new Venta(
