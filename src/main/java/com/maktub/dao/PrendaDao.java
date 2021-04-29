@@ -75,13 +75,13 @@ public class PrendaDao {
     
             //metodo donde filtro es la columna de agrupamiento del select
     
-    public static List<Stock> filtro(String filtro) throws Exception{
+    public static List<Stock> filtro() throws Exception{
         List <Stock> listaStock = new ArrayList();
         Connection cn = ConnectionManager.obtenerConexion();
             String sqlConsultaStock = "select p.tipo as tipo, p.talle as talle, p.marca as marca, p.color as color, p.costo as costo, s.cantidad as cantidad " +
                                     "from prenda as p " +
                                     "inner join stock as s " +
-                                    "on p.idprenda = s.idPrenda Order by " + filtro;
+                                    "on p.idprenda = s.idPrenda Order by tipo, talle, marca, color";
             Statement st = cn.createStatement();
             ResultSet rs = st.executeQuery(sqlConsultaStock);
             while(rs.next()){

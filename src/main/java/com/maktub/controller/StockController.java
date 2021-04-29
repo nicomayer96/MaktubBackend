@@ -32,10 +32,10 @@ import org.springframework.web.bind.annotation.RestController;
 public class StockController {
     
     @GetMapping
-    public ResponseEntity <List<Stock>> readAll(@RequestParam(value="filtro") String filtro) throws Exception{
+    public ResponseEntity <List<Stock>> readAll() throws Exception{
         try{    
             List<Stock> stock = new ArrayList();
-            stock = PrendaDao.filtro(filtro);
+            stock = PrendaDao.filtro();
             return new ResponseEntity(stock , HttpStatus.OK);
         }catch(Exception e){
             return new ResponseEntity(e, HttpStatus.INTERNAL_SERVER_ERROR);
