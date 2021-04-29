@@ -46,7 +46,7 @@ public class VentaDao {
                         //El registro de venta que tienen monto !=0(solo una por venta)
                         //se le agrega el numero de venta siguiente al que estaba
     
-    String sqlModificarNumVenta = "UPDATE Ventas set numeroVenta = ((SELECT numeroVenta FROM " 
+    String sqlModificarNumVenta = "UPDATE ventas set numeroVenta = ((SELECT numeroVenta FROM " 
             +"(SELECT MAX(numeroVenta) AS numeroVenta FROM ventas) "
             + "AS numeroVenta))+1 "
             + "WHERE monto > 0 and Cliente like '"
@@ -56,7 +56,7 @@ public class VentaDao {
                         //El registro de venta que no tiene monto(casos donde se compran mas de una prenda)
                         //mantiene el numero de venta
     
-    String sqlModificarNumVenta2 = "UPDATE Ventas set numeroVenta = ((SELECT numeroVenta FROM " 
+    String sqlModificarNumVenta2 = "UPDATE ventas set numeroVenta = ((SELECT numeroVenta FROM " 
             +"(SELECT MAX(numeroVenta) AS numeroVenta FROM ventas) "
             + "AS numeroVenta)) "
             + "WHERE monto in (0) and Cliente like '"
