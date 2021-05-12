@@ -52,23 +52,23 @@ public class PrendaDao {
             + "' and color = '" + stock.getColor() + "' limit 1)";
     
             //Eliminar stock repetido dejando el de mejor idStock
-    String sqlDeleteRepetido = "delete from stock where idPrenda like"
-            + " (select idPrenda from prenda where "
-            + "tipo = '" + stock.getTipo()
-            + "' and talle = '" + stock.getTalle()
-            + "' and marca = '" + stock.getMarca()
-            + "' and color = '" + stock.getColor() + "' limit 1) and "
-            + "idStock>(select min(idStock) from Stock where idPrenda like "
-            + "(select idPrenda from prenda where "
-            + "tipo = '" + stock.getTipo()
-            + "' and talle = '" + stock.getTalle()
-            + "' and marca = '" + stock.getMarca()
-            + "' and color = '" + stock.getColor() + "' limit 1))";
+//    String sqlDeleteRepetido = "delete from stock where idPrenda like"
+//            + " (select idPrenda from prenda where "
+//            + "tipo = '" + stock.getTipo()
+//            + "' and talle = '" + stock.getTalle()
+//            + "' and marca = '" + stock.getMarca()
+//            + "' and color = '" + stock.getColor() + "' limit 1) and "
+//            + "idStock>(select min(idStock) from Stock where idPrenda like "
+//            + "(select idPrenda from prenda where "
+//            + "tipo = '" + stock.getTipo()
+//            + "' and talle = '" + stock.getTalle()
+//            + "' and marca = '" + stock.getMarca()
+//            + "' and color = '" + stock.getColor() + "' limit 1))";
     Statement st = cn.createStatement();
     st.execute(sqlAgregarPrenda);
     st.execute(sqlAgregarStock);
     st.execute(sqlSumaCantidades);
-    st.execute(sqlDeleteRepetido);
+//    st.execute(sqlDeleteRepetido);
     st.close();
     cn.close();
     }
