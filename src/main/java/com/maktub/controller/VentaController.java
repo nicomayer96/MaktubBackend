@@ -47,11 +47,12 @@ public class VentaController {
     }
    
     @GetMapping("/ganancia")
-    public ResponseEntity<Venta>GananciaMensual(@RequestParam(value="mes") int mes) throws Exception{
+    public ResponseEntity<List<Venta>>GananciaMensual(@RequestParam(value="mes") int mes) throws Exception{
         try{    
-            Venta venta = new Venta();
-            venta = VentaDao.gananciaTotal(mes);
-            return new ResponseEntity(venta , HttpStatus.OK);
+            List<Venta> ventas = new ArrayList();
+            
+            ventas = VentaDao.gananciaTotal(mes);
+            return new ResponseEntity(ventas , HttpStatus.OK);
         }catch(Exception e){
             return new ResponseEntity(e +" ,"+ VentaDao.gananciaTotal(6) + " ", HttpStatus.INTERNAL_SERVER_ERROR);
         }
