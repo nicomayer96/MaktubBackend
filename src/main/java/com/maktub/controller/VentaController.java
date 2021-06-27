@@ -54,7 +54,7 @@ public class VentaController {
             ventas = VentaDao.gananciaTotal(mes);
             return new ResponseEntity(ventas , HttpStatus.OK);
         }catch(Exception e){
-            return new ResponseEntity(e +" ,"+ VentaDao.gananciaTotal(6) + " ", HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity(e, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
     
