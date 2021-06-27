@@ -148,7 +148,7 @@ public class VentaDao {
         cn.close();
         
     }
-     public static Venta gananciaTotal(int mes) throws Exception{
+     public static List<Venta> gananciaTotal(int mes) throws Exception{
             
         Connection cn = ConnectionManager.obtenerConexion();
         
@@ -164,19 +164,19 @@ public class VentaDao {
             Statement st = cn.createStatement();
             ResultSet rs = st.executeQuery(sqlConsultaStock);
             Venta venta = new Venta();
-
+            List<Venta> ventas = new ArrayList();
             while(rs.next()){
                 int monto = rs.getInt("ganancia");
                 System.out.println(monto);
                 venta.setMonto(monto);
                 
-                
+                ventas.add(venta);
             }                 
                
                 
             st.close();
             cn.close();
          
-    return venta;
+    return ventas;
     }
 }
