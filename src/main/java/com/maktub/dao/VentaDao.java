@@ -97,8 +97,10 @@ public class VentaDao {
                 "on v.idprenda = p.idPrenda " +
                 "where month(fecha) like " + mes +
                     " order by day(fecha)";
+            
             Statement st = cn.createStatement();
             ResultSet rs = st.executeQuery(sqlConsultaVentas);
+            
             while(rs.next()){
                 Venta venta = new Venta();
                 String cliente = rs.getString("Cliente");
@@ -128,29 +130,53 @@ public class VentaDao {
                 
                 ventas.add(venta);
             }
-            st.close();
+                        st.close();
             cn.close();
     
     return ventas;
 }
-////     public static List<Venta> totalVenta(int ordenMes) throws Exception{
-////            List<Venta> ventas = new ArrayList();
-////        Connection cn = ConnectionManager.obtenerConexion();
-////            String sqlConsultaStock = "Select SUM(monto) as FacturacionMensual"
-////                    + " from Ventas where Month(fecha) like " + ordenMes;
-////            Statement st = cn.createStatement();
-////            ResultSet rs = st.executeQuery(sqlConsultaStock);
-////            Venta venta = new Venta();
-////
-////            rs.first();
-////                 
-////                int monto = rs.getInt("FacturacionMensual");
-////                System.out.println(monto);
-////                venta.setMonto(monto);
-////                ventas.add(venta);
-////            st.close();
-////            cn.close();
-////         
-////    return ventas;
-////    }
+    
+    public static void cambioEstadoPago(Venta venta) throws Exception{
+        Connection cn = ConnectionManager.obtenerConexion();
+        String sqlCambioEstadoPago = "UPDATE Ventas SET Pago = IF(Pago = true, false, true) where "
+                + "cliente like " + venta.getNombreCli()
+                + " and monto like " + venta.getMonto()
+                + " and formaPago like" + venta.getFormaPago();
+        Statement st = cn.createStatement();
+        st.execute(sqlCambioEstadoPago);
+        st.close();
+        cn.close();
+        
+    }
+     public static Venta gananciaTotal(int mes) throws Exception{
+            
+        Connection cn = ConnectionManager.obtenerConexion();
+        
+            String sqlConsultaStock = "select "
+                    + "(SELECT sum(monto)as monto from prenda as p "
+                    + "inner join ventas as v "
+                    + "on v.idprenda = p.idprenda where Month(fecha) = " + mes + ")"
+                    + " - (select sum(costo)as costo from prenda as p "
+                    + "inner join ventas as v "
+                    + "on v.idprenda = p.idprenda where Month(fecha) = " + mes + ")"
+                    + " as ganancia";
+                   
+            Statement st = cn.createStatement();
+            ResultSet rs = st.executeQuery(sqlConsultaStock);
+            Venta venta = new Venta();
+
+            while(rs.next()){
+                int monto = rs.getInt("ganancia");
+                System.out.println(monto);
+                venta.setMonto(monto);
+                
+                
+            }                 
+               
+                
+            st.close();
+            cn.close();
+         
+    return venta;
+    }
 }
