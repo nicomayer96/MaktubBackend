@@ -65,8 +65,7 @@ public class VentaController {
                     ventaView.getMarca(),
                     ventaView.getColor(),
                     ventaView.getNombreCli(),
-                    ventaView.getMonto(),
-                    ventaView.isEstadoPago(),                    
+                    ventaView.getMonto(),                    
                     ventaView.getFormaPago(),
                     ventaView.getFecha(),
                     ventaView.getEnvio());
