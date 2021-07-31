@@ -15,7 +15,6 @@ import java.util.Date;
 public class Venta extends Prenda{
     private String nombreCli;
     private int monto;
-    private boolean estadoPago;
     private String formaPago;
     Date fecha = new Date();
     
@@ -27,21 +26,19 @@ public class Venta extends Prenda{
         super();
     }
    
-    public Venta(String tipo, String talle, String marca, String color, String nombreCli, int monto, boolean estadoPago, String formaPago, Date fecha, String envio) {
+    public Venta(String tipo, String talle, String marca, String color, String nombreCli, int monto, String formaPago, Date fecha, String envio) {
         super(tipo, talle, marca, color);
         this.nombreCli = nombreCli;
         this.monto = monto;
-        this.estadoPago = estadoPago;
         this.formaPago = formaPago;
         this.fecha = fecha;
         this.envio = envio;
         
     }
-    public Venta(String tipo, String talle, String marca, String color, String nombreCli, int monto, boolean estadoPago, String formaPago, Date fecha, String envio, int numeroVenta) {
+    public Venta(String tipo, String talle, String marca, String color, String nombreCli, int monto, String formaPago, Date fecha, String envio, int numeroVenta) {
         super(tipo, talle, marca, color);
         this.nombreCli = nombreCli;
         this.monto = monto;
-        this.estadoPago = estadoPago;
         this.formaPago = formaPago;
         this.fecha = fecha;
         this.envio = envio;
@@ -76,14 +73,6 @@ public class Venta extends Prenda{
         this.monto = monto;
     }
 
-    public boolean isEstadoPago() {
-        return estadoPago;
-    }
-
-    public void setEstadoPago(boolean estadoPago) {
-        this.estadoPago = estadoPago;
-    }
-
     public String getFormaPago() {
         return formaPago;
     }
@@ -112,7 +101,6 @@ public class Venta extends Prenda{
     public String toString() {
         return "Venta{" + "nombreCli=" + nombreCli +
                 ", monto=" + monto +
-                ", estadoPago=" + estadoPago +
                 ", formaPago=" + formaPago +
                 ", fecha=" + fecha +
                 ", envio=" + envio +
