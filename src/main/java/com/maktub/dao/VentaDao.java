@@ -28,11 +28,10 @@ public class VentaDao {
 //    String reformattedStr = (myFormat.format((venta.getFecha())));
     
     
-    String sqlAgregar = "insert into ventas (cliente, monto, formaPago, pago, fecha, envio, idPrenda, numeroVenta) " +
+    String sqlAgregar = "insert into ventas (cliente, monto, formaPago, fecha, envio, idPrenda, numeroVenta) " +
             "Values ( '" + venta.getNombreCli() + "', "
             + venta.getMonto() + ", '"
             + venta.getFormaPago() + "', "
-            + venta.isEstadoPago() + ", '"
             + dateString + "', '"
             + venta.getEnvio() + "', "
             + "(select idPrenda from prenda where "
@@ -90,7 +89,7 @@ public class VentaDao {
         List <Venta> ventas = new ArrayList();
 
         Connection cn = ConnectionManager.obtenerConexion();
-            String sqlConsultaVentas = "select v.Cliente, v.monto, v.formaPago, v.pago, v.fecha, v.envio, v.numeroVenta,"
+            String sqlConsultaVentas = "select v.Cliente, v.monto, v.formaPago, v.fecha, v.envio, v.numeroVenta,"
                     + " p.tipo, p.talle, p.marca, p.color " +
                 "from ventas as v " +
                 "inner join prenda as p " +
@@ -106,7 +105,6 @@ public class VentaDao {
                 String cliente = rs.getString("Cliente");
                 int monto = rs.getInt("monto");
                 String fPago = rs.getString("formaPago");
-                boolean pago = rs.getBoolean("pago");
                 Date fecha = new Date();
                 fecha = rs.getDate("fecha");
                 String envio = rs.getString("envio");
@@ -119,7 +117,6 @@ public class VentaDao {
                 venta.setNombreCli(cliente);
                 venta.setMonto(monto);
                 venta.setFormaPago(fPago);
-                venta.setEstadoPago(pago);
                 venta.setFecha(fecha);
                 venta.setEnvio(envio);
                 venta.setNumeroVenta(numeroVenta);
@@ -135,19 +132,6 @@ public class VentaDao {
     
     return ventas;
 }
-    
-    public static void cambioEstadoPago(Venta venta) throws Exception{
-        Connection cn = ConnectionManager.obtenerConexion();
-        String sqlCambioEstadoPago = "UPDATE Ventas SET Pago = IF(Pago = true, false, true) where "
-                + "cliente like " + venta.getNombreCli()
-                + " and monto like " + venta.getMonto()
-                + " and formaPago like" + venta.getFormaPago();
-        Statement st = cn.createStatement();
-        st.execute(sqlCambioEstadoPago);
-        st.close();
-        cn.close();
-        
-    }
      public static List<Venta> gananciaTotal(int mes) throws Exception{
             
         Connection cn = ConnectionManager.obtenerConexion();
