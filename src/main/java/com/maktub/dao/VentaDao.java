@@ -31,9 +31,9 @@ public class VentaDao {
     String sqlAgregar = "insert into ventas (cliente, monto, formaPago, fecha, envio, idPrenda, numeroVenta) " +
             "Values ( '" + venta.getNombreCli() + "', "
             + venta.getMonto() + ", '"
-            + venta.getFormaPago() + "', "
+            + venta.getFormaPago() + "', '"
             + dateString + "', '"
-            + venta.getEnvio() + "' "
+            + venta.getEnvio() + "', "
             + "(select idPrenda from prenda where "
             + "tipo = '" + venta.getTipo()
             + "' and talle = '" + venta.getTalle()
