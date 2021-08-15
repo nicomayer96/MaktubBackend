@@ -163,4 +163,89 @@ public class VentaDao {
          
     return ventas;
     }
+     
+     // sql traer tipo 
+//        "SELECT DISTINCT tipo FROM `prenda` order by tipo"
+     
+     //sql traer marca segun tipo 
+//        "SELECT DISTINCT marca FROM `prenda` where tipo LIKE "TIPO" order by marca"
+     
+     //sql traer talle segun tipo y marca 
+//        "SELECT DISTINCT talle FROM `prenda` where tipo LIKE "TIPO" and marca LIKE "MARCA" order by talle"
+     
+     //sql traer color segun tipo, marca y talle
+//        "SELECT color FROM `prenda` where tipo LIKE "TIPO" and marca LIKE "MARCA" and talle LIKE "TALLE" order by talle"
+     
+         public static List<String> traerTipo() throws Exception{
+        List <String> lista = new ArrayList();
+        Connection cn = ConnectionManager.obtenerConexion();
+            String sqlConsulta = "select DISTINCT p.tipo as tipo, s.cantidad as cantidad"
+                    + " from prenda as p inner join stock as s on p.idprenda = s.idPrenda"
+                    + " where cantidad > 0 Order by tipo";
+            Statement st = cn.createStatement();
+            ResultSet rs = st.executeQuery(sqlConsulta);
+            while(rs.next()){
+                String tipo = rs.getString("tipo");
+                lista.add(tipo);
+            }
+            st.close();
+            cn.close();
+    
+    return lista;
+    }
+                  public static List<String> traerMarca(String tipo) throws Exception{
+        List <String> lista = new ArrayList();
+        Connection cn = ConnectionManager.obtenerConexion();
+            String sqlConsulta = "select DISTINCT p.marca as marca"
+                    + " from prenda as p inner join stock as s "
+                    + "on p.idprenda = s.idPrenda "
+                    + "where s.cantidad > 0 and p.tipo like '" + tipo + "' Order by marca";
+            Statement st = cn.createStatement();
+            ResultSet rs = st.executeQuery(sqlConsulta);
+            while(rs.next()){
+                String marca = rs.getString("marca");
+                lista.add(marca);
+            }
+            st.close();
+            cn.close();
+    
+    return lista;
+    }
+                    public static List<String> traerTalle(String tipo, String marca) throws Exception{
+        List <String> lista = new ArrayList();
+        Connection cn = ConnectionManager.obtenerConexion();
+            String sqlConsulta = "select DISTINCT p.talle as talle"
+                    + " from prenda as p inner join stock as s "
+                    + "on p.idprenda = s.idPrenda "
+                    + "where s.cantidad > 0 and p.tipo like '" + tipo + "' and p.marca like '" + marca + "' Order by talle";
+            Statement st = cn.createStatement();
+            ResultSet rs = st.executeQuery(sqlConsulta);
+            while(rs.next()){
+                String talle = rs.getString("talle");
+                lista.add(talle);
+            }
+            st.close();
+            cn.close();
+    
+    return lista;
+    }      
+                    public static List<String> traerColor(String tipo, String marca, String talle) throws Exception{
+        List <String> lista = new ArrayList();
+        Connection cn = ConnectionManager.obtenerConexion();
+            String sqlConsulta = "select DISTINCT p.color as color"
+                    + " from prenda as p inner join stock as s "
+                    + "on p.idprenda = s.idPrenda "
+                    + "where s.cantidad > 0 and p.tipo like '" + tipo + "' and"
+                    + " p.marca like '" + marca + "' and p.talle like '" + talle + "' Order by color";
+            Statement st = cn.createStatement();
+            ResultSet rs = st.executeQuery(sqlConsulta);
+            while(rs.next()){
+                String color = rs.getString("color");
+                lista.add(color);
+            }
+            st.close();
+            cn.close();
+    
+    return lista;
+    }    
 }
