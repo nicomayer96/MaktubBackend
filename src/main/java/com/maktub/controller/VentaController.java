@@ -69,7 +69,7 @@ public class VentaController {
     }
     
     @GetMapping("/marca")
-    public ResponseEntity<List<String>>traerMarca(@RequestParam() String tipo) throws Exception{
+    public ResponseEntity<List<String>>traerMarca(@RequestParam(value="tipo") String tipo) throws Exception{
         try{    
             List<String> marcas = new ArrayList();
             
