@@ -56,6 +56,54 @@ public class VentaController {
         }
     }
     
+    @GetMapping("/tipo")
+    public ResponseEntity<List<String>>traerTipo() throws Exception{
+        try{    
+            List<String> tipos = new ArrayList();
+            
+            tipos = VentaDao.traerTipo();
+            return new ResponseEntity(tipos , HttpStatus.OK);
+        }catch(Exception e){
+            return new ResponseEntity(e, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    
+    @GetMapping("/marca")
+    public ResponseEntity<List<String>>traerMarca(@RequestParam() String tipo) throws Exception{
+        try{    
+            List<String> marcas = new ArrayList();
+            
+            marcas = VentaDao.traerMarca(tipo);
+            return new ResponseEntity(marcas , HttpStatus.OK);
+        }catch(Exception e){
+            return new ResponseEntity(e, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    
+    @GetMapping("/talle")
+    public ResponseEntity<List<String>>traerTalle(@RequestParam() String tipo, String marca) throws Exception{
+        try{    
+            List<String> talles = new ArrayList();
+            
+            talles = VentaDao.traerTalle(tipo, marca);
+            return new ResponseEntity(talles , HttpStatus.OK);
+        }catch(Exception e){
+            return new ResponseEntity(e, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    
+        @GetMapping("/color")
+    public ResponseEntity<List<String>>traerColor(@RequestParam() String tipo, String marca, String talle) throws Exception{
+        try{    
+            List<String> colores = new ArrayList();
+            
+            colores = VentaDao.traerColor(tipo, marca, talle);
+            return new ResponseEntity(colores , HttpStatus.OK);
+        }catch(Exception e){
+            return new ResponseEntity(e, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    
     @PostMapping("/cargarVentas")
     public ResponseEntity create(@RequestBody VentaView ventaView) throws Exception{
         try{            
