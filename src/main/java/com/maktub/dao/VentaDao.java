@@ -179,7 +179,7 @@ public class VentaDao {
          public static List<String> traerTipo() throws Exception{
         List <String> lista = new ArrayList();
         Connection cn = ConnectionManager.obtenerConexion();
-            String sqlConsulta = "select DISTINCT p.tipo as tipo, s.cantidad as cantidad"
+            String sqlConsulta = "select DISTINCT p.tipo as tipo"
                     + " from prenda as p inner join stock as s on p.idprenda = s.idPrenda"
                     + " where cantidad > 0 Order by tipo";
             Statement st = cn.createStatement();
