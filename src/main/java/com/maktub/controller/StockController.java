@@ -33,9 +33,9 @@ public class StockController {
     @GetMapping
     public ResponseEntity <List<Stock>> readAll() throws Exception{
         try{    
-            List<Stock> stock = new ArrayList();
-            stock = PrendaDao.filtro();
-            return new ResponseEntity(stock , HttpStatus.OK);
+            List<StockView> stockView = new ArrayList();
+            stockView = PrendaDao.filtro();
+            return new ResponseEntity(stockView , HttpStatus.OK);
         }catch(Exception e){
             return new ResponseEntity(e, HttpStatus.INTERNAL_SERVER_ERROR);
         }
