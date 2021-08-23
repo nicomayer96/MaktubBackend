@@ -41,12 +41,12 @@ public class StockController {
         }
     }
                
-    @DeleteMapping
-    public ResponseEntity delete(@RequestBody Stock stock) throws Exception{
+    @DeleteMapping("/delete/{idStock}")
+    public ResponseEntity delete(@RequestBody int idStock) throws Exception{
         try{    
             
-            PrendaDao.eliminarStock(stock);
-            return new ResponseEntity(stock , HttpStatus.OK);
+            PrendaDao.eliminarStock(idStock);
+            return new ResponseEntity(idStock , HttpStatus.OK);
         }catch(Exception e){
             return new ResponseEntity(e, HttpStatus.INTERNAL_SERVER_ERROR);
         }
