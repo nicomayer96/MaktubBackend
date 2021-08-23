@@ -7,6 +7,7 @@ package com.maktub.dao;
 
 
 import com.maktub.model.Stock;
+import com.maktub.view.StockView;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
@@ -75,8 +76,8 @@ public class PrendaDao {
     
             //metodo donde filtro es la columna de agrupamiento del select
     
-    public static List<Stock> filtro() throws Exception{
-        List <Stock> listaStock = new ArrayList();
+    public static List<StockView> filtro() throws Exception{
+        List <StockView> listaStock = new ArrayList();
         Connection cn = ConnectionManager.obtenerConexion();
             String sqlConsultaStock = "select p.tipo as tipo, p.talle as talle, p.marca as marca, p.color as color, p.costo as costo, s.cantidad as cantidad, s.idStock as idStock " +
                                     "from prenda as p " +
@@ -85,19 +86,21 @@ public class PrendaDao {
             Statement st = cn.createStatement();
             ResultSet rs = st.executeQuery(sqlConsultaStock);
             while(rs.next()){
-                Stock stock = new Stock();
+                StockView stock = new StockView();
                 String tipo = rs.getString("tipo");
                 String talle = rs.getString("talle");
                 String marca = rs.getString("marca");
                 String color = rs.getString("color");
                 int cant = rs.getInt("Cantidad");
                 int costo = rs.getInt("costo");
+                int idStock = rs.getInt("idStock");
                 stock.setTipo(tipo);
                 stock.setTalle(talle);
                 stock.setMarca(marca);
                 stock.setColor(color);
                 stock.setCosto(costo);
                 stock.setCantidad(cant);
+                stock.setIdStock(idStock);
                 listaStock.add(stock);
             }
             st.close();
