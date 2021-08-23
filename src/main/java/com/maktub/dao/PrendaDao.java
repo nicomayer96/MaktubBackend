@@ -78,7 +78,7 @@ public class PrendaDao {
     public static List<Stock> filtro() throws Exception{
         List <Stock> listaStock = new ArrayList();
         Connection cn = ConnectionManager.obtenerConexion();
-            String sqlConsultaStock = "select p.tipo as tipo, p.talle as talle, p.marca as marca, p.color as color, p.costo as costo, s.cantidad as cantidad " +
+            String sqlConsultaStock = "select p.tipo as tipo, p.talle as talle, p.marca as marca, p.color as color, p.costo as costo, s.cantidad as cantidad, s.idStock as idStock " +
                                     "from prenda as p " +
                                     "inner join stock as s " +
                                     "on p.idprenda = s.idPrenda Order by tipo, talle, marca, color";
@@ -108,24 +108,11 @@ public class PrendaDao {
     
 
     
-    public static void eliminarStock(Stock stock) throws Exception{
+    public static void eliminarStock(int idStock) throws Exception{
         Connection cn = ConnectionManager.obtenerConexion();
-    String sqlEliminarPrenda = "delete from prenda where idPrenda = " +
-                                "(select IDprenda where tipo like '"
-            + stock.getTipo()
-            + "' and talle like '"+ stock.getTalle()
-            + "' and marca like '" + stock.getMarca()
-            + "' and color like '" + stock.getColor()
-            + "')"; 
-    String sqlEliminarStock = "delete from stock where idPrenda = " +
-                                "(select IDprenda from prenda where tipo like '"
-            + stock.getTipo()
-            + "' and talle like '"+ stock.getTalle()
-            + "' and marca like '" + stock.getMarca()
-            + "' and color like '" + stock.getColor()
-            + "')";
+
+    String sqlEliminarStock = "delete from stock where idPrenda = " + idStock;
     Statement st = cn.createStatement();
-    st.execute(sqlEliminarPrenda);
     st.execute(sqlEliminarStock);
     st.close();
     cn.close();
