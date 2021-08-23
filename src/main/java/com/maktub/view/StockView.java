@@ -16,17 +16,18 @@ public class StockView {
     private String marca;
     private String color;
     int cantidad;
-
+    int idStock;
     public StockView() {
     }
 
-    public StockView(String tipo, int costo, String talle, String marca, String color, int cantidad) {
+    public StockView(String tipo, int costo, String talle, String marca, String color, int cantidad, int idStock) {
         this.tipo = tipo;
         this.costo = costo;
         this.talle = talle;
         this.marca = marca;
         this.color = color;
         this.cantidad = cantidad;
+        this.idStock = idStock;
     }
 
     public String getTipo() {
@@ -76,7 +77,13 @@ public class StockView {
     public void setCantidad(int cantidad) {
         this.cantidad = cantidad;
     }
+    public int getIdStock() {
+        return idStock;
+    }
 
+    public void setIdStock(int idStock) {
+        this.idStock = idStock;
+    }
     @Override
     public String toString() {
         return "StockView{"
