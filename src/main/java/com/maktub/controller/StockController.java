@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -41,8 +42,8 @@ public class StockController {
         }
     }
                
-    @DeleteMapping("/delete/{idStock}")
-    public ResponseEntity delete(@RequestBody int idStock) throws Exception{
+    @DeleteMapping("/deleteStock")
+    public ResponseEntity delete(@RequestParam(value="idStock") int idStock) throws Exception{
         try{    
             
             PrendaDao.eliminarStock(idStock);
