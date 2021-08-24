@@ -47,7 +47,7 @@ public class StockController {
         try{    
             
             PrendaDao.eliminarStock(idStock);
-            return new ResponseEntity(idStock , HttpStatus.OK);
+            return new ResponseEntity(HttpStatus.OK);
         }catch(Exception e){
             return new ResponseEntity(e, HttpStatus.INTERNAL_SERVER_ERROR);
         }
