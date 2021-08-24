@@ -114,7 +114,7 @@ public class PrendaDao {
     public static void eliminarStock(int idStock) throws Exception{
         Connection cn = ConnectionManager.obtenerConexion();
 
-    String sqlEliminarStock = "delete * from stock where idPrenda like " + idStock;
+    String sqlEliminarStock = "delete from stock where idPrenda like " + idStock;
     Statement st = cn.createStatement();
     st.execute(sqlEliminarStock);
     st.close();
