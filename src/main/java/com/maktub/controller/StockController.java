@@ -42,7 +42,7 @@ public class StockController {
         }
     }
                
-    @DeleteMapping("/deleteStock")
+    @DeleteMapping
     public ResponseEntity delete(@RequestParam(value="idStock") int idStock) throws Exception{
         try{    
             
