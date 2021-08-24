@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -42,12 +43,11 @@ public class StockController {
         }
     }
                
-    @DeleteMapping
-    public ResponseEntity delete(@RequestParam(value="idStock") int idStock) throws Exception{
-        try{    
-            
+    @DeleteMapping(value = "/delete/{idStock}")
+    public ResponseEntity delete(@PathVariable int idStock) throws Exception{
+        try{     
             PrendaDao.eliminarStock(idStock);
-            return new ResponseEntity(HttpStatus.OK);
+            return new ResponseEntity(idStock, HttpStatus.OK);
         }catch(Exception e){
             return new ResponseEntity(e, HttpStatus.INTERNAL_SERVER_ERROR);
         }
