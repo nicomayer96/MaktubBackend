@@ -10,6 +10,7 @@ import com.maktub.model.Venta;
 import java.sql.Connection;
 import java.util.Date;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
@@ -85,7 +86,7 @@ public class VentaDao {
     
                             //Visualizar las ventas por mes
     
-    public static List<Venta> verVentas(int mes) throws Exception{
+    public static List<Venta> verVentas(int mes, int año) throws Exception{
         List <Venta> ventas = new ArrayList();
 
         Connection cn = ConnectionManager.obtenerConexion();
@@ -95,7 +96,8 @@ public class VentaDao {
                 "inner join prenda as p " +
                 "on v.idprenda = p.idPrenda " +
                 "where month(fecha) like " + mes +
-                    " order by day(fecha)";
+                    "and year(fecha) like " + año 
+                    + " order by day(fecha)";
             
             Statement st = cn.createStatement();
             ResultSet rs = st.executeQuery(sqlConsultaVentas);
@@ -132,7 +134,25 @@ public class VentaDao {
     
     return ventas;
 }
-     public static List<Venta> gananciaTotal(int mes) throws Exception{
+    
+    public static boolean deleteVenta (int numVenta) throws Exception{
+        
+        String sqlEliminarVenta = "delete from ventas where NumeroVenta = " + numVenta;
+        boolean eliminar = false;
+       try{ 
+        Connection cn = ConnectionManager.obtenerConexion();
+        Statement st = cn.createStatement();
+        st.execute(sqlEliminarVenta);
+        st.close();
+        cn.close();
+        eliminar=true;
+       }catch(SQLException e){
+           e.printStackTrace();
+       }
+       return eliminar;
+    }
+    
+    public static int gananciaTotal(int mes) throws Exception{
             
         Connection cn = ConnectionManager.obtenerConexion();
         
@@ -147,36 +167,18 @@ public class VentaDao {
                    
             Statement st = cn.createStatement();
             ResultSet rs = st.executeQuery(sqlConsultaStock);
-            Venta venta = new Venta();
-            List<Venta> ventas = new ArrayList();
+            int ganancia = 0;
             while(rs.next()){
-                int monto = rs.getInt("ganancia");
-                System.out.println(monto);
-                venta.setMonto(monto);
-                
-                ventas.add(venta);
+                ganancia = rs.getInt("ganancia");
             }                 
-               
-                
+
             st.close();
             cn.close();
          
-    return ventas;
+    return ganancia;
     }
      
-     // sql traer tipo 
-//        "SELECT DISTINCT tipo FROM `prenda` order by tipo"
-     
-     //sql traer marca segun tipo 
-//        "SELECT DISTINCT marca FROM `prenda` where tipo LIKE "TIPO" order by marca"
-     
-     //sql traer talle segun tipo y marca 
-//        "SELECT DISTINCT talle FROM `prenda` where tipo LIKE "TIPO" and marca LIKE "MARCA" order by talle"
-     
-     //sql traer color segun tipo, marca y talle
-//        "SELECT color FROM `prenda` where tipo LIKE "TIPO" and marca LIKE "MARCA" and talle LIKE "TALLE" order by talle"
-     
-         public static List<String> traerTipo() throws Exception{
+    public static List<String> traerTipo() throws Exception{
         List <String> lista = new ArrayList();
         Connection cn = ConnectionManager.obtenerConexion();
             String sqlConsulta = "select DISTINCT p.tipo as tipo"
@@ -193,7 +195,8 @@ public class VentaDao {
     
     return lista;
     }
-                  public static List<String> traerMarca(String tipo) throws Exception{
+         
+    public static List<String> traerMarca(String tipo) throws Exception{
         List <String> lista = new ArrayList();
         Connection cn = ConnectionManager.obtenerConexion();
             String sqlConsulta = "select DISTINCT p.marca as marca"
@@ -211,7 +214,8 @@ public class VentaDao {
     
     return lista;
     }
-                    public static List<String> traerTalle(String tipo, String marca) throws Exception{
+    
+    public static List<String> traerTalle(String tipo, String marca) throws Exception{
         List <String> lista = new ArrayList();
         Connection cn = ConnectionManager.obtenerConexion();
             String sqlConsulta = "select DISTINCT p.talle as talle"
@@ -228,8 +232,9 @@ public class VentaDao {
             cn.close();
     
     return lista;
-    }      
-                    public static List<String> traerColor(String tipo, String marca, String talle) throws Exception{
+    }  
+    
+    public static List<String> traerColor(String tipo, String marca, String talle) throws Exception{
         List <String> lista = new ArrayList();
         Connection cn = ConnectionManager.obtenerConexion();
             String sqlConsulta = "select DISTINCT p.color as color"
@@ -247,5 +252,7 @@ public class VentaDao {
             cn.close();
     
     return lista;
-    }    
+    } 
+    
+    //select p.IdPrenda, p.Tipo, p.Talle, p.Marca, p.Color, v.NumeroVenta from prenda as p inner join ventas as v on p.IdPrenda = v.IdPrenda where NumberoVenta = + numVenta
 }
