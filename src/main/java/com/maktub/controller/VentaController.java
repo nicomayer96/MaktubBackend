@@ -7,6 +7,7 @@ package com.maktub.controller;
 
 
 
+import com.maktub.dao.PrendaDao;
 import com.maktub.dao.VentaDao;
 import com.maktub.model.Venta;
 import com.maktub.view.VentaView;
@@ -15,7 +16,9 @@ import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,23 +37,24 @@ public class VentaController {
     
     
     @GetMapping("/ventas")
-    public ResponseEntity <List<Venta>> readAll(@RequestParam(value="mes") int mes) throws Exception{
+    public ResponseEntity <List<Venta>> readAll(@RequestParam(value="mes") int mes, int año) throws Exception{
         try{    
-            List<Venta> ventas = new ArrayList();          
-            ventas = VentaDao.verVentas(mes);     
+            List<Venta> ventas = new ArrayList();  
+            ventas = VentaDao.verVentas(mes, año);  
+
             return new ResponseEntity(ventas , HttpStatus.OK);
         }catch(Exception e){
             return new ResponseEntity(e , HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
    
-    @GetMapping("/ganancia")
-    public ResponseEntity<List<Venta>>GananciaMensual(@RequestParam(value="mes") int mes) throws Exception{
+    @GetMapping("/gananciaTotal")
+    public ResponseEntity GananciaMensual(@RequestParam(value="mes") int mes) throws Exception{
         try{    
-            List<Venta> ventas = new ArrayList();
-            
-            ventas = VentaDao.gananciaTotal(mes);
-            return new ResponseEntity(ventas , HttpStatus.OK);
+            //List<Venta> ventas = new ArrayList();
+            int ganancia = VentaDao.gananciaTotal(mes);
+            //ventas = VentaDao.gananciaTotal(mes);
+            return new ResponseEntity(ganancia , HttpStatus.OK);
         }catch(Exception e){
             return new ResponseEntity(e, HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -92,7 +96,7 @@ public class VentaController {
         }
     }
     
-        @GetMapping("/color")
+    @GetMapping("/color")
     public ResponseEntity<List<String>>traerColor(@RequestParam() String tipo, String marca, String talle) throws Exception{
         try{    
             List<String> colores = new ArrayList();
@@ -126,6 +130,17 @@ public class VentaController {
     }
     }
   
+    @DeleteMapping(value="/delete/{numVenta}")
+    public ResponseEntity delete(@PathVariable("numVenta") int numVenta) throws Exception{
+        try{     
+            PrendaDao.eliminarStock(numVenta);
+            
+            return new ResponseEntity(numVenta + " " + HttpStatus.OK, HttpStatus.OK);
+        }catch(Exception e){
+            return new ResponseEntity(e + " " + HttpStatus.INTERNAL_SERVER_ERROR, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    
 //    @PutMapping("/{cliente}")
 //    public ResponseEntity <Venta> updateVenta(@PathVariable String cliente, @RequestBody Venta venta ) throws Exception{
 //        try{
