@@ -37,10 +37,10 @@ public class VentaController {
     
     
     @GetMapping("/ventas")
-    public ResponseEntity <List<Venta>> readAll(@RequestParam(value="mes") int mes, int año) throws Exception{
+    public ResponseEntity <List<Venta>> readAll(@RequestParam() int mes, int year) throws Exception{
         try{    
             List<Venta> ventas = new ArrayList();  
-            ventas = VentaDao.verVentas(mes, año);  
+            ventas = VentaDao.verVentas(mes, year);  
 
             return new ResponseEntity(ventas , HttpStatus.OK);
         }catch(Exception e){
@@ -49,10 +49,10 @@ public class VentaController {
     }
    
     @GetMapping("/gananciaTotal")
-    public ResponseEntity GananciaMensual(@RequestParam(value="mes") int mes) throws Exception{
+    public ResponseEntity GananciaMensual(@RequestParam() int mes, int year) throws Exception{
         try{    
             //List<Venta> ventas = new ArrayList();
-            int ganancia = VentaDao.gananciaTotal(mes);
+            int ganancia = VentaDao.gananciaTotal(mes, year);
             //ventas = VentaDao.gananciaTotal(mes);
             return new ResponseEntity(ganancia , HttpStatus.OK);
         }catch(Exception e){
