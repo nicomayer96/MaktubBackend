@@ -152,19 +152,19 @@ public class VentaDao {
        return eliminar;
     }
     
-    public static int gananciaTotal(int mes) throws Exception{
+    public static int gananciaTotal(int mes, int año) throws Exception{
             
         Connection cn = ConnectionManager.obtenerConexion();
-        
+                    
             String sqlConsultaStock = "select "
                     + "(SELECT sum(monto)as monto from prenda as p "
                     + "inner join ventas as v "
-                    + "on v.idprenda = p.idprenda where Month(fecha) = " + mes + ")"
-                    + " - (select sum(costo)as costo from prenda as p "
+                    + "on v.idprenda = p.idprenda where Month(fecha) = " + mes + " and Year(fecha) = " + año
+                    + ") - (select sum(costo)as costo from prenda as p "
                     + "inner join ventas as v "
-                    + "on v.idprenda = p.idprenda where Month(fecha) = " + mes + ")"
+                    + "on v.idprenda = p.idprenda where Month(fecha) = " + mes + " and Year(fecha) = " + año + ")"
                     + " as ganancia";
-                   
+            
             Statement st = cn.createStatement();
             ResultSet rs = st.executeQuery(sqlConsultaStock);
             int ganancia = 0;
