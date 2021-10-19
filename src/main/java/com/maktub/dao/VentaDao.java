@@ -86,7 +86,7 @@ public class VentaDao {
     
                             //Visualizar las ventas por mes
     
-    public static List<Venta> verVentas(int mes, int año) throws Exception{
+    public static List<Venta> verVentas(int mes) throws Exception{
         List <Venta> ventas = new ArrayList();
 
         Connection cn = ConnectionManager.obtenerConexion();
@@ -96,7 +96,7 @@ public class VentaDao {
                 "inner join prenda as p " +
                 "on v.idprenda = p.idPrenda " +
                 "where month(fecha) like " + mes +
-                    "and year(fecha) like " + año 
+                    "and year(fecha) like 2021"
                     + " order by day(fecha)";
             
             Statement st = cn.createStatement();
@@ -152,17 +152,17 @@ public class VentaDao {
        return eliminar;
     }
     
-    public static int gananciaTotal(int mes, int año) throws Exception{
+    public static int gananciaTotal(int mes) throws Exception{
             
         Connection cn = ConnectionManager.obtenerConexion();
                     
             String sqlConsultaStock = "select "
                     + "(SELECT sum(monto)as monto from prenda as p "
                     + "inner join ventas as v "
-                    + "on v.idprenda = p.idprenda where Month(fecha) = " + mes + " and Year(fecha) = " + año
+                    + "on v.idprenda = p.idprenda where Month(fecha) = " + mes + " and Year(fecha) = 2021" 
                     + ") - (select sum(costo)as costo from prenda as p "
                     + "inner join ventas as v "
-                    + "on v.idprenda = p.idprenda where Month(fecha) = " + mes + " and Year(fecha) = " + año + ")"
+                    + "on v.idprenda = p.idprenda where Month(fecha) = " + mes + " and Year(fecha) = 2021)"
                     + " as ganancia";
             
             Statement st = cn.createStatement();
