@@ -96,7 +96,7 @@ public class VentaDao {
                 "inner join prenda as p " +
                 "on v.idprenda = p.idPrenda " +
                 "where month(fecha) like " + mes +
-                     " order by day(fecha)";
+                     "and year(fecha) like 2021 order by day(fecha)";
             
             Statement st = cn.createStatement();
             ResultSet rs = st.executeQuery(sqlConsultaVentas);
