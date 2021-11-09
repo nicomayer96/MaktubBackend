@@ -21,11 +21,12 @@ public class GastoDao {
     
     public static void agregarGasto(Gasto gasto) throws Exception{
     Connection cn = ConnectionManager.obtenerConexion();
-
+    String dateString = String.format("%1$tY-%1$tm-%1$td", gasto.getFecha());
+    
     String sqlAgregarGasto = "insert into Gastos(Descripcion, monto, fecha) " +
-            "values ( " + gasto.getDescripcion() + ", " + 
-             gasto.getMonto() + ", "
-            + gasto.getFecha() + ")";
+            "values ( '" + gasto.getDescripcion() + "', " + 
+             gasto.getMonto() + ", '"
+            + dateString + "')";
 
     Statement st = cn.createStatement();
     st.execute(sqlAgregarGasto);
@@ -35,21 +36,21 @@ public class GastoDao {
     }
     
     
-    public static List<Gasto> verGastos(int mes, int year) throws Exception{
+    public static List<Gasto> verGastos(int mes) throws Exception{
         List <Gasto> gastos = new ArrayList();
 
         Connection cn = ConnectionManager.obtenerConexion();
             String sqlConsultaGastos = "select Descripcion, Monto, Fecha " +
                                 "from Gastos " +
                                 "where month(fecha) = " + mes +
-                                " and year(fecha) = " + year;
+                                " and year(fecha) = 2021";
             
             Statement st = cn.createStatement();
             ResultSet rs = st.executeQuery(sqlConsultaGastos);
             
             while(rs.next()){
                 Gasto gasto = new Gasto();
-                String descripcion = rs.getString("descripcion");
+                String descripcion = rs.getString("Descripcion");
                 int monto = rs.getInt("Monto");
                 Date fecha = new Date();
                 fecha = rs.getDate("fecha");
