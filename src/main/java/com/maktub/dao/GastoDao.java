@@ -66,4 +66,27 @@ public class GastoDao {
     
     return gastos;
 }
+    
+    public static int verMontoGastos(int mes) throws Exception{
+        int gastoTotal = 0;
+
+        Connection cn = ConnectionManager.obtenerConexion();
+            String sqlConsultaGastos = "select sum(Monto) as monto " +
+                                "from Gastos " +
+                                "where month(fecha) = " + mes +
+                                " and year(fecha) = 2021";
+            
+            Statement st = cn.createStatement();
+            ResultSet rs = st.executeQuery(sqlConsultaGastos);
+            
+            while(rs.next()){
+                
+                gastoTotal = rs.getInt("Monto");
+
+            }
+            st.close();
+            cn.close();
+    
+    return gastoTotal;
+}
 }
