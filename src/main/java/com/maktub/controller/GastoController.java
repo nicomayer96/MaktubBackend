@@ -51,4 +51,15 @@ public class GastoController {
         
     }
     }
+    @GetMapping("/verMontoGastos")
+    public ResponseEntity verMontoGastos(@RequestParam() int mes) throws Exception{
+        try{    
+            int montoGastos = 0;
+            montoGastos = GastoDao.verMontoGastos(mes);
+
+            return new ResponseEntity(montoGastos , HttpStatus.OK);
+        }catch(Exception e){
+            return new ResponseEntity(e , HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }
