@@ -53,7 +53,7 @@ public class GastoController {
     }
     
     @GetMapping("/verMontoGastos")
-    public ResponseEntity verMontoGastos(@RequestParam() int mes) throws Exception{
+    public ResponseEntity verMonto(@RequestParam() int mes) throws Exception{
         try{    
             int montoGastos = GastoDao.verMontoGastos(mes);
 
