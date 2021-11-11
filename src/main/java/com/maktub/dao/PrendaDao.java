@@ -10,6 +10,7 @@ import com.maktub.model.Stock;
 import com.maktub.view.StockView;
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +25,7 @@ public class PrendaDao {
     
     public static void agregarPrenda(Stock stock) throws Exception{
     Connection cn = ConnectionManager.obtenerConexion();
+        System.out.println("Mensaje en DAO");
     String sqlAgregarPrenda = "insert into prenda(tipo, talle, marca, color, costo) " +
             "Values ( '" + stock.getTipo() + "', '"
             + stock.getTalle() + "', '"
@@ -35,7 +37,8 @@ public class PrendaDao {
             + "tipo = '" + stock.getTipo()
             + "' and talle = '" + stock.getTalle()
             + "' and marca = '" + stock.getMarca()
-            + "' and color = '" + stock.getColor() + "' limit 1), "
+            + "' and color = '" + stock.getColor()
+            + "' and costo = '" + stock.getCosto() + "' limit 1), "
             + stock.getCantidad() + ")";
     
             //Suma las cantidad en stock, en caso de que la prenda ya este cargada,
@@ -82,7 +85,7 @@ public class PrendaDao {
             String sqlConsultaStock = "select p.tipo as tipo, p.talle as talle, p.marca as marca, p.color as color, p.costo as costo, s.cantidad as cantidad, s.idStock as idStock " +
                                     "from prenda as p " +
                                     "inner join stock as s " +
-                                    "on p.idprenda = s.idPrenda Order by tipo, talle, marca, color";
+                                    "on p.idprenda = s.idPrenda where cantidad > 0 Order by tipo, talle, marca, color";
             Statement st = cn.createStatement();
             ResultSet rs = st.executeQuery(sqlConsultaStock);
             while(rs.next()){
@@ -109,16 +112,20 @@ public class PrendaDao {
     return listaStock;
     }
     
-
-    
-    public static void eliminarStock(int idStock) throws Exception{
+    public static boolean eliminarStock(int idStock) throws Exception{
+        String sqlEliminarStock = "delete from stock where idStock = " + idStock;
+        boolean eliminar = false;
+       try{ 
         Connection cn = ConnectionManager.obtenerConexion();
-
-    String sqlEliminarStock = "delete from stock where idPrenda like " + idStock;
-    Statement st = cn.createStatement();
-    st.execute(sqlEliminarStock);
-    st.close();
-    cn.close();
+        Statement st = cn.createStatement();
+        st.execute(sqlEliminarStock);
+        st.close();
+        cn.close();
+        eliminar=true;
+       }catch(SQLException e){
+           e.printStackTrace();
+       }
+       return eliminar;
     }
     
     

@@ -6,6 +6,7 @@
 package com.maktub.dao;
 
 
+import com.maktub.model.Prenda;
 import com.maktub.model.Venta;
 import java.sql.Connection;
 import java.util.Date;
@@ -64,14 +65,15 @@ public class VentaDao {
             + "' and fecha like '"
             + dateString + "'";
     
-                        //Modificar el stock de las prendas vendidas
+                        //Modificar el stock de las prendas vendidas cuando cantidad > 1
     
     String sqlModificarStock = "update stock set cantidad = (cantidad-1)"
             + " where idPrenda = (select IDprenda from prenda"
             + " where tipo = '" + venta.getTipo()
             + "' and talle = '" + venta.getTalle()
             + "' and marca = '" + venta.getMarca()
-            + "' and color = '" + venta.getColor() + "' limit 1)";
+            + "' and color = '" + venta.getColor() + "' limit 1)"
+            + " and cantidad > 0";
     
     Statement st = cn.createStatement();
     st.execute(sqlAgregar);
@@ -86,17 +88,18 @@ public class VentaDao {
     
                             //Visualizar las ventas por mes
     
-    public static List<Venta> verVentas(int mes) throws Exception{
+    public static List<Venta> verVentas(int mes, int year) throws Exception{
         List <Venta> ventas = new ArrayList();
-
+        System.out.println(year);
         Connection cn = ConnectionManager.obtenerConexion();
             String sqlConsultaVentas = "select v.Cliente, v.monto, v.formaPago, v.fecha, v.envio, v.numeroVenta,"
-                    + " p.tipo, p.talle, p.marca, p.color " +
+                    + " p.tipo, p.talle, p.marca, p.color, p.costo " +
                 "from ventas as v " +
                 "inner join prenda as p " +
                 "on v.idprenda = p.idPrenda " +
-                "where month(fecha) like " + mes +
-                     " and year(fecha) like 2021 order by day(fecha)";
+                "where month(fecha) like " + mes 
+                    + " and year(fecha) like " + year
+                    + " order by day(fecha)";
             
             Statement st = cn.createStatement();
             ResultSet rs = st.executeQuery(sqlConsultaVentas);
@@ -114,6 +117,7 @@ public class VentaDao {
                 String talle = rs.getString("talle");
                 String marca = rs.getString("marca");
                 String color = rs.getString("color");
+                int costo = rs.getInt("costo");
                 
                 venta.setNombreCli(cliente);
                 venta.setMonto(monto);
@@ -125,7 +129,7 @@ public class VentaDao {
                 venta.setTalle(talle);
                 venta.setMarca(marca);
                 venta.setColor(color);
-                
+                venta.setCosto(costo);
                 ventas.add(venta);
             }
                         st.close();
@@ -134,9 +138,61 @@ public class VentaDao {
     return ventas;
 }
     
-    public static boolean deleteVenta (int numVenta) throws Exception{
+    public static List<Prenda> verDetalleVenta(int numeroVenta) throws Exception{
+        List <Prenda> prendas = new ArrayList();
+
+        Connection cn = ConnectionManager.obtenerConexion();
+            String sqlConsultaVentas = "select v.NumeroVenta as NumeroVenta, p.tipo as tipo, p.talle as talle, p.color as color, p.marca as marca " +
+                                "from ventas as v " +
+                                "INNER JOIN prenda as p " +
+                                "ON v.IdPrenda=p.IDprenda " +
+                                "where v.NumeroVenta = " + numeroVenta;
+            
+            Statement st = cn.createStatement();
+            ResultSet rs = st.executeQuery(sqlConsultaVentas);
+            
+            while(rs.next()){
+                Prenda prenda = new Prenda();
+                //int idPrenda = rs.getInt("idPrenda") QUIZAS ES BUENO TENERLO
+                String tipo = rs.getString("tipo");
+                String talle = rs.getString("talle");
+                String color = rs.getString("color");
+                String marca = rs.getString("marca");
+
+                prenda.setTipo(tipo);
+                prenda.setTalle(talle);
+                prenda.setMarca(marca);
+                prenda.setColor(color);
+                
+                prendas.add(prenda);
+            }
+                        st.close();
+            cn.close();
+    
+    return prendas;
+}
+    
+//    public static boolean deleteVenta (int numVenta) throws Exception{
+//        
+//        String sqlEliminarVenta = "delete from ventas where NumeroVenta = " + numVenta;
+//        String sqlAgregarPrendaDescontada = ""
+//        boolean eliminar = false;
+//       try{ 
+//        Connection cn = ConnectionManager.obtenerConexion();
+//        Statement st = cn.createStatement();
+//        st.execute(sqlEliminarVenta);
+//        st.close();
+//        cn.close();
+//        eliminar=true;
+//       }catch(SQLException e){
+//           e.printStackTrace();
+//       }
+//       return eliminar;
+//    }
+        public static boolean deleteVenta (Venta venta) throws Exception{
         
-        String sqlEliminarVenta = "delete from ventas where NumeroVenta = " + numVenta;
+        String sqlEliminarVenta = "delete from ventas where NumeroVenta = ";
+        //String sqlAgregarPrendaDescontada = ""
         boolean eliminar = false;
        try{ 
         Connection cn = ConnectionManager.obtenerConexion();
@@ -150,7 +206,6 @@ public class VentaDao {
        }
        return eliminar;
     }
-    
     public static int gananciaTotal(int mes) throws Exception{
             
         Connection cn = ConnectionManager.obtenerConexion();
