@@ -90,7 +90,6 @@ public class VentaDao {
     
     public static List<Venta> verVentas(int mes) throws Exception{
         List <Venta> ventas = new ArrayList();
-        System.out.println(year);
         Connection cn = ConnectionManager.obtenerConexion();
             String sqlConsultaVentas = "select v.Cliente, v.monto, v.formaPago, v.fecha, v.envio, v.numeroVenta,"
                     + " p.tipo, p.talle, p.marca, p.color, p.costo " +
