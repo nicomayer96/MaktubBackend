@@ -212,10 +212,10 @@ public class VentaDao {
             String sqlConsultaStock = "select "
                     + "(SELECT sum(monto)as monto from prenda as p "
                     + "inner join ventas as v "
-                    + "on v.idprenda = p.idprenda where Month(fecha) = " + mes + " and Year(fecha) = 2021" 
+                    + "on v.idprenda = p.idprenda where Month(fecha) = " + mes + " and Year(fecha) = 2022" 
                     + ") - (select sum(costo)as costo from prenda as p "
                     + "inner join ventas as v "
-                    + "on v.idprenda = p.idprenda where Month(fecha) = " + mes + " and Year(fecha) = 2021)"
+                    + "on v.idprenda = p.idprenda where Month(fecha) = " + mes + " and Year(fecha) = 2022)"
                     + " as ganancia";
             
             Statement st = cn.createStatement();
