@@ -38,7 +38,7 @@ public class PrendaDao {
             + "' and talle = '" + stock.getTalle()
             + "' and marca = '" + stock.getMarca()
             + "' and color = '" + stock.getColor()
-            + "' and costo = '" + stock.getCosto() + "' limit 1), "
+            + "' and costo = '" + stock.getCosto() + "' order by idPrenda desc limit 1), "
             + stock.getCantidad() + ")";
     
             //Suma las cantidad en stock, en caso de que la prenda ya este cargada,
@@ -48,12 +48,14 @@ public class PrendaDao {
             + "tipo = '" + stock.getTipo()
             + "' and talle = '" + stock.getTalle()
             + "' and marca = '" + stock.getMarca()
-            + "' and color = '" + stock.getColor() + "' limit 1)) "
+            + "' and color = '" + stock.getColor() + 
+            + "' and costo = " + stock.getCosto() + "' limit 1)) "
             + "where idPrenda like (select idPrenda from prenda where "
             + "tipo = '" + stock.getTipo()
             + "' and talle = '" + stock.getTalle()
             + "' and marca = '" + stock.getMarca()
-            + "' and color = '" + stock.getColor() + "' limit 1)";
+            + "' and color = '" + stock.getColor() + 
+            + "' and costo = " + stock.getCosto() + " limit 1)";
     
             //Eliminar stock repetido dejando el de mejor idStock
 //    String sqlDeleteRepetido = "delete from stock where idPrenda like"
