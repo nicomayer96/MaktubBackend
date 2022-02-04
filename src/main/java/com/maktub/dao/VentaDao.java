@@ -72,7 +72,7 @@ public class VentaDao {
             + " where tipo = '" + venta.getTipo()
             + "' and talle = '" + venta.getTalle()
             + "' and marca = '" + venta.getMarca()
-            + "' and color = '" + venta.getColor() + "' limit 1)"
+            + "' and color = '" + venta.getColor() + "' order by idPrenda desc limit 1)"
             + " and cantidad > 0";
     
     Statement st = cn.createStatement();
