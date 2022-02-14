@@ -40,7 +40,7 @@ public class VentaDao {
             + "tipo = '" + venta.getTipo()
             + "' and talle = '" + venta.getTalle()
             + "' and marca = '" + venta.getMarca()
-            + "' and color = '" + venta.getColor() + "' order by idPrenda asc limit 1),"
+            + "' and color = '" + venta.getColor() + "' order by idPrenda desc limit 1),"
             + "0" + ")";
         System.out.println(dateString);
         System.out.println(venta.getFecha());
