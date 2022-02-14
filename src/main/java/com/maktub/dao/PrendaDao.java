@@ -48,13 +48,13 @@ public class PrendaDao {
             + "tipo = '" + stock.getTipo()
             + "' and talle = '" + stock.getTalle()
             + "' and marca = '" + stock.getMarca()
-            + "' and color = '" + stock.getColor() + 
+            + "' and color = '" + stock.getColor()  
             + "' and costo = " + stock.getCosto() + "' limit 1)) "
             + "where idPrenda like (select idPrenda from prenda where "
             + "tipo = '" + stock.getTipo()
             + "' and talle = '" + stock.getTalle()
             + "' and marca = '" + stock.getMarca()
-            + "' and color = '" + stock.getColor() + 
+            + "' and color = '" + stock.getColor()  
             + "' and costo = " + stock.getCosto() + " limit 1)";
     
             //Eliminar stock repetido dejando el de mejor idStock
